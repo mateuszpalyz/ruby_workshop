@@ -56,4 +56,14 @@ class MoneyTest < Minitest::Test
     Exchange.any_instance.stubs(:fetch_exchange_rate).returns(0.3)
     assert @money > Money(10, "PLN")
   end
+
+  def test_money_ranges
+    case @money
+      when Money(20, "PLN")..Money(30, "PLN") then test = "fail"
+      when Money(30, "PLN")..Money(40, "PLN") then test = "OK"
+      when Money(40, "PLN")..Money(50, "PLN") then test = "fail"
+    end
+
+    assert_equal "OK", test
+  end
 end
