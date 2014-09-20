@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require './money'
-require './object.rb'
+require './object'
 
 class MoneyTest < Minitest::Test
   def setup
