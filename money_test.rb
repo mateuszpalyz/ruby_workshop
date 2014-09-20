@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require './money'
+require './object.rb'
 
 class MoneyTest < Minitest::Test
   def setup
@@ -24,5 +25,9 @@ class MoneyTest < Minitest::Test
 
   def test_from_gbp_usage
     assert_equal "#<Money 10.00 GBP>", Money.from_gbp(10).inspect
+  end
+
+  def test_Money_usage
+    assert_equal "#<Money 10.00 USD>", Money(10, "USD").inspect
   end
 end
