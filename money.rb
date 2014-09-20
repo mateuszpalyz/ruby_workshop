@@ -1,6 +1,12 @@
 require './exchange'
 
 class Money
+  include Comparable
+
+  def <=>(other)
+    @amount <=> other.exchange_to(@currency)
+  end
+
   attr_reader :amount, :currency
 
   def initialize(amount, currency)
