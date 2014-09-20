@@ -46,4 +46,14 @@ class MoneyTest < Minitest::Test
     exception = assert_raises(Exchange::InvalidCurrency) { @money.exchange_to("XYZ") }
     assert_equal "Invalid currency: XYZ", exception.message
   end
+
+  def test_money_comparison_operator_when_equal
+    Exchange.any_instance.stubs(:fetch_exchange_rate).returns(1)
+    assert @money == Money(10, "USD")
+  end
+
+  def test_money_comparison_operator_when_differ
+    Exchange.any_instance.stubs(:fetch_exchange_rate).returns(0.3)
+    assert @money > Money(10, "PLN")
+  end
 end
