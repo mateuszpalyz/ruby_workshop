@@ -37,4 +37,8 @@ class Money
   def exchange_to(currency)
     Money.exchange.convert(Money(@amount, @currency), currency)
   end
+
+  def to_int
+    @currency == "USD" ? @amount.to_int : exchange_to("USD").to_int
+  end
 end
