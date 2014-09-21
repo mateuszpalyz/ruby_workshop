@@ -33,12 +33,12 @@ class MoneyTest < Minitest::Test
   end
 
   def test_exchange_convert_usage
-    Exchange.any_instance.stubs(:fetch_exchange_rate).returns(3.25)
+    Exchange.any_instance.stubs(:calculate).returns(32.5)
     assert_equal 32.5, Money.exchange.convert(@money, "PLN")
   end
 
   def test_exchange_to_usage
-    Exchange.any_instance.stubs(:fetch_exchange_rate).returns(3.25)
+    Exchange.any_instance.stubs(:calculate).returns(32.5)
     assert_equal 32.5, @money.exchange_to("PLN")
   end
 

@@ -1,5 +1,5 @@
-require 'json'
-require 'net/http'
+require './rate'
+require './object'
 
 class Exchange
   @@currencies = ["USD", "EUR", "GBP", "CHF", "JPY", "PLN"]
@@ -7,19 +7,20 @@ class Exchange
   def convert(money, currency)
     raise InvalidCurrency, currency       unless @@currencies.include? currency
     raise InvalidCurrency, money.currency unless @@currencies.include? money.currency
-    rate = fetch_exchange_rate(money.currency, currency)
-    calculate(money.amount, rate)
+
+    Rate.rates.each do |rate|
+      if rate.from == money.currency and rate.to == currency
+        @multiplier = rate.get_multiplier
+        break
+      end
+    end
+
+    @multiplier ||= Rate(money.currency, currency).get_multiplier
+    calculate(money.amount, @multiplier)
   end
 
   def calculate(amount, rate)
     amount * rate
-  end
-
-  def fetch_exchange_rate(from, to)
-    url = "http://rate-exchange.appspot.com/currency?from=#{from}&to=#{to}"
-    response = Net::HTTP.get_response(URI.parse(url))
-    data = response.body
-    JSON.parse(data)["rate"]
   end
 
   class InvalidCurrency < StandardError
