@@ -66,4 +66,21 @@ class MoneyTest < Minitest::Test
 
     assert_equal "OK", test
   end
+
+  def test_method_missing_for_exisitng_currency
+    Exchange.any_instance.stubs(:calculate).returns(32.5)
+    assert_equal 32.5, @money.to_pln
+  end
+
+  def test_method_missing_for_non_exisitng_currency
+    assert_raises(NoMethodError) { @money.to_xyz }
+  end
+
+  def test_respond_to_for_exisitng_currency
+    assert @money.respond_to?(:to_pln)
+  end
+
+  def test_respond_to_for_non_exisitng_currency
+    refute @money.respond_to?(:to_xyz)
+  end
 end
