@@ -8,14 +8,7 @@ class Exchange
     raise InvalidCurrency, currency       unless @@currencies.include? currency
     raise InvalidCurrency, money.currency unless @@currencies.include? money.currency
 
-    Rate.rates.each do |rate|
-      if rate.from == money.currency and rate.to == currency
-        @multiplier = rate.get_multiplier
-        break
-      end
-    end
-
-    @multiplier ||= Rate(money.currency, currency).get_multiplier
+    @multiplier = Rate(money.currency, currency).get_multiplier
     calculate(money.amount, @multiplier)
   end
 
