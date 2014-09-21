@@ -5,8 +5,8 @@ class Exchange
   @@currencies = ["USD", "EUR", "GBP", "CHF", "JPY", "PLN"]
 
   def convert(money, currency)
-    raise InvalidCurrency, "Invalid currency: #{currency}"       unless @@currencies.include? currency
-    raise InvalidCurrency, "Invalid currency: #{money.currency}" unless @@currencies.include? money.currency
+    raise InvalidCurrency, currency       unless @@currencies.include? currency
+    raise InvalidCurrency, money.currency unless @@currencies.include? money.currency
     rate = fetch_exchange_rate(money.currency, currency)
     calculate(money.amount, rate)
   end
@@ -22,5 +22,9 @@ class Exchange
     JSON.parse(data)["rate"]
   end
 
-  class InvalidCurrency < StandardError; end
+  class InvalidCurrency < StandardError
+    def message
+      "Invalid currency: " + super
+    end
+  end
 end
