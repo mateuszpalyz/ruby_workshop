@@ -41,4 +41,12 @@ class Money
   def to_int
     @currency == "USD" ? @amount.to_int : exchange_to("USD").to_int
   end
+
+  def method_missing(method, *arguments, &block)
+    method.to_s =~ /^to_(.*)$/ and Exchange.currencies.include?($1.upcase) ? exchange_to($1.upcase) : super
+  end
+
+  def respond_to?(method)
+    method.to_s =~ /^to_(.*)$/ and Exchange.currencies.include?($1.upcase) ? true : super
+  end
 end

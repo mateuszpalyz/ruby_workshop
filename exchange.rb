@@ -16,6 +16,10 @@ class Exchange
     amount * rate
   end
 
+  def self.currencies
+    @@currencies
+  end
+
   class InvalidCurrency < StandardError
     def message
       "Invalid currency: " + super
