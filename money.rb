@@ -35,7 +35,7 @@ class Money
   end
 
   def exchange_to(currency)
-    Money.exchange.convert(Money(@amount, @currency), currency)
+    Money.exchange.convert(self, currency)
   end
 
   def to_int
