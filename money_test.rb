@@ -48,12 +48,12 @@ class MoneyTest < Minitest::Test
   end
 
   def test_money_comparison_operator_when_equal
-    Exchange.any_instance.stubs(:fetch_exchange_rate).returns(1)
+    Exchange.any_instance.stubs(:calculate).returns(10)
     assert @money == Money(10, "USD")
   end
 
   def test_money_comparison_operator_when_differ
-    Exchange.any_instance.stubs(:fetch_exchange_rate).returns(0.3)
+    Exchange.any_instance.stubs(:calculate).returns(3.3)
     assert @money > Money(10, "PLN")
   end
 
