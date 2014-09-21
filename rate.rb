@@ -21,7 +21,7 @@ class Rate
   end
 
   def outdated?
-    Time.now - @time_stamp > 86400 ? true : false
+    Time.now - @time_stamp > 86400
   end
 
   def get_multiplier
