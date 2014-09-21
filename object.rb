@@ -5,8 +5,8 @@ end
 def Rate(from, to)
   Rate.rates.each do |rate|
     if rate.from == from and rate.to == to
-      return rate
+      return rate.get_multiplier
     end
   end
-  Rate.new(from, to)
+  Rate.new(from, to).get_multiplier
 end

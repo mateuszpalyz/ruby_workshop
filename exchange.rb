@@ -8,8 +8,8 @@ class Exchange
     raise InvalidCurrency, currency       unless @@currencies.include? currency
     raise InvalidCurrency, money.currency unless @@currencies.include? money.currency
 
-    @multiplier = Rate(money.currency, currency).get_multiplier
-    calculate(money.amount, @multiplier)
+    rate = Rate(money.currency, currency)
+    calculate(money.amount, rate)
   end
 
   def calculate(amount, rate)
