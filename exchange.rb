@@ -8,13 +8,11 @@ class Exchange
     raise InvalidCurrency, "Invalid currency: #{currency}"       unless @@currencies.include? currency
     raise InvalidCurrency, "Invalid currency: #{money.currency}" unless @@currencies.include? money.currency
     rate = fetch_exchange_rate(money.currency, currency)
-    send("convert_to_#{currency}", money.amount, rate)
+    calculate(money.amount, rate)
   end
 
-  @@currencies.each do |currency|
-    define_method "convert_to_#{currency}" do |amount, rate|
-      amount * rate
-    end
+  def calculate(amount, rate)
+    amount * rate
   end
 
   def fetch_exchange_rate(from, to)
