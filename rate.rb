@@ -16,8 +16,8 @@ class Rate
     url = "http://rate-exchange.appspot.com/currency?from=#{@from}&to=#{@to}"
     response = Net::HTTP.get_response(URI.parse(url))
     data = response.body
-    @multiplier = JSON.parse(data)["rate"]
     @time_stamp = Time.now
+    @multiplier = JSON.parse(data)["rate"]
   end
 
   def outdated?
