@@ -83,4 +83,15 @@ class MoneyTest < Minitest::Test
   def test_respond_to_for_non_exisitng_currency
     refute @money.respond_to?(:to_xyz)
   end
+
+  def test_currency_default_scope
+    Money.using_default_currency "USD" do
+      assert Money(10) == @money
+    end
+  end
+
+  def test_call_without_default_scope
+    exception = assert_raises(ArgumentError) { Money(100) }
+    assert_equal "No currency given", exception.message
+  end
 end
