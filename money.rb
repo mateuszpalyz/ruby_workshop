@@ -9,7 +9,9 @@ class Money
 
   attr_reader :amount, :currency
 
-  def initialize(amount, currency)
+  def initialize(amount, currency = Money.default_currency)
+    raise ArgumentError.new("No currency given") unless currency
+
     @amount = amount
     @currency = currency
   end
@@ -23,15 +25,26 @@ class Money
   end
 
   class << self
+    attr_reader :default_currency
+
     ["usd", "eur", "gbp"].each do |currency|
       define_method "from_#{currency}" do |amount|
         Money.new(amount, currency.upcase)
       end
     end
-  end
 
-  def self.exchange
-    Exchange.new
+    def using_default_currency(currency)
+      if block_given?
+        @default_currency = currency
+        return_value = yield
+        @default_currency = nil
+        return_value
+      end
+    end
+
+    def exchange
+      Exchange.new
+    end
   end
 
   def exchange_to(currency)

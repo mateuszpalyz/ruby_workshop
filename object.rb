@@ -1,5 +1,5 @@
-def Money(amount, currency)
-  Money.new(amount, currency)
+def Money(*args)
+  Money.new(*args)
 end
 
 def Rate(from, to)
