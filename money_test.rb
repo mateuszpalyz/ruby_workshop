@@ -91,6 +91,14 @@ class MoneyTest < Minitest::Test
     assert result
   end
 
+  def test_currency_default_scope_while_nesting
+    result = Money.using_default_currency "USD" do
+      Money.using_default_currency("PLN") {}
+      Money(10) == @money
+    end
+    assert result
+  end
+
   def test_call_without_default_scope
     exception = assert_raises(ArgumentError) { Money(100) }
     assert_equal "No currency given", exception.message
