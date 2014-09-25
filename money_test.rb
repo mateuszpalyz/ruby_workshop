@@ -85,9 +85,10 @@ class MoneyTest < Minitest::Test
   end
 
   def test_currency_default_scope
-    Money.using_default_currency "USD" do
-      assert Money(10) == @money
+    result = Money.using_default_currency "USD" do
+      Money(10) == @money
     end
+    assert result
   end
 
   def test_call_without_default_scope
