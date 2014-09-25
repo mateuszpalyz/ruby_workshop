@@ -34,12 +34,11 @@ class Money
     end
 
     def using_default_currency(currency)
-      if block_given?
-        @default_currency = currency
-        return_value = yield
-        @default_currency = nil
-        return_value
-      end
+      previous_default_currency = @default_currency
+      @default_currency = currency
+      return_value = yield
+      @default_currency = previous_default_currency
+      return_value
     end
 
     def exchange
