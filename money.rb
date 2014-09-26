@@ -1,6 +1,8 @@
 require './exchange'
 
 class Money
+  METHOD_FORMAT = /^to_(.*)$/
+
   include Comparable
 
   def <=>(other)
@@ -34,11 +36,14 @@ class Money
     end
 
     def using_default_currency(currency)
-      previous_default_currency = @default_currency
-      @default_currency = currency
-      return_value = yield
-      @default_currency = previous_default_currency
-      return_value
+      begin
+        previous_default_currency = @default_currency
+        @default_currency = currency
+        return_value = yield
+        return_value
+      ensure
+        @default_currency = previous_default_currency
+      end
     end
 
     def exchange
@@ -55,10 +60,10 @@ class Money
   end
 
   def method_missing(method, *arguments, &block)
-    method.to_s =~ /^to_(.*)$/ && Exchange.currencies.include?($1.upcase) ? exchange_to($1.upcase) : super
+    method.to_s =~ METHOD_FORMAT && Exchange.currencies.include?($1.upcase) ? exchange_to($1.upcase) : super
   end
 
-  def respond_to?(method)
-    method.to_s =~ /^to_(.*)$/ && Exchange.currencies.include?($1.upcase) ? true : super
+  def respond_to_missing?(method, include_private = false)
+    method.to_s =~ METHOD_FORMAT && Exchange.currencies.include?($1.upcase) ? true : super
   end
 end
